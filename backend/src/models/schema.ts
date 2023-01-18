@@ -17,7 +17,7 @@ const personSchema = {
         },
     },
     wishlist: {
-        dataType: '[string]',
+        dataType: 'string[]',
     }, 
 };
 
