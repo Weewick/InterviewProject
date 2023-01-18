@@ -20,3 +20,5 @@ const personSchema = {
         dataType: '[string]',
     }, 
 };
+
+export = personSchema;

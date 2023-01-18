@@ -1,0 +1,10 @@
+{
+    "name": "Dieter",
+    "age": 38,
+    "birthdate": "1985-01-04",
+    "residence": {
+        "country": "Germany",
+        "city": "Berlin"
+    },
+    "wishlist": ["monitor", "car", "mobile phone"]
+}
