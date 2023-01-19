@@ -1,17 +1,5 @@
 <div class="container">
   <app-header></app-header>
-  <div *ngFor="let val of sortedResult; let i = index">
-    <div *ngIf="sortedResult[i][0]==='/'">
-      <hr style="height:4px;border-width:0;color:gray;background-color:gray">
-    </div>
-    <div *ngIf="sortedResult[i][0]!=='/' && !sortedResult[i][2]">
-      &nbsp;
-      <app-label [label]="sortedResult[i][0]" [indentNum]="+sortedResult[i][1]"></app-label>
-    </div>
-    <div *ngIf="sortedResult[i][0]!=='/' && sortedResult[i][2]">
-      <app-input-field [label]="sortedResult[i][0]" [type]="sortedResult[i][1]" [indentNum]="+sortedResult[i][2]-1" [array]="false"></app-input-field>
-    </div>
-  </div>
-  <app-button (btnClick)="verify()"></app-button>
+  <app-input-field></app-input-field>
 </div>
 

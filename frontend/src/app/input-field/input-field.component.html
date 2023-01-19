@@ -1,12 +1,23 @@
-<div class="form-control" style="display: flex;">
-    <div *ngFor="let i of Arr(indentNum).fill(1)">
-        <pre>   </pre>
+<div *ngFor="let val of sortedResult; let i = index">
+    <div *ngIf="sortedResult[i][0]==='/'">
+        <hr style="height:4px;border-width:0;color:gray;background-color:gray">
     </div>
-    <label>{{ label }}({{ type }}{{array ? ' array' : ''}}):</label>
-</div>
-<div class="form-control" style="display: flex;">
-    <div *ngFor="let i of Arr(indentNum).fill(1)">
-        <pre>   </pre>
+    <div *ngIf="sortedResult[i][0]!=='/' && !sortedResult[i][2]">
+        <app-label [label]="sortedResult[i][0]" [indentNum]="+sortedResult[i][1]"></app-label>
     </div>
-    <input value='{{text}}'>
+    <div *ngIf="sortedResult[i][0]!=='/' && sortedResult[i][2]">
+        <div class="form-control" style="display: flex;">
+            <div *ngFor="let i of Arr(+sortedResult[i][2]-1).fill(1)">
+                <pre>   </pre>
+            </div>
+            <label>{{ sortedResult[i][0] }}({{ sortedResult[i][1] }}):</label>
+        </div>
+        <div class="form-control" style="display: flex;">
+            <div *ngFor="let i of Arr(+sortedResult[i][2]-1).fill(1)">
+                <pre>   </pre>
+            </div>
+            <input value='{{sortedResult[i][0]}}' id='{{sortedResult[i][0]}}' name='{{sortedResult[i][0]}}'>
+        </div>
+    </div>
 </div>
+<app-button (btnClick)="verify()"></app-button>
