@@ -1,6 +1,12 @@
-<form>
-    <div class="form-control">
-        <label>{{ label }}({{ type.type }}{{type.array ? ' array' : ''}}):</label>
-        <input value='{{text}}'>
+<div class="form-control" style="display: flex;">
+    <div *ngFor="let i of Arr(indentNum).fill(1)">
+        <pre>   </pre>
     </div>
-</form>
+    <label>{{ label }}({{ type }}{{array ? ' array' : ''}}):</label>
+</div>
+<div class="form-control" style="display: flex;">
+    <div *ngFor="let i of Arr(indentNum).fill(1)">
+        <pre>   </pre>
+    </div>
+    <input value='{{text}}'>
+</div>

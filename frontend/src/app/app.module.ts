@@ -7,6 +7,7 @@ import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { ButtonComponent } from './button/button.component';
 import { InputFieldComponent } from './input-field/input-field.component';
+import { LabelComponent } from './label/label.component';
 
 @NgModule({
   declarations: [
@@ -14,6 +15,7 @@ import { InputFieldComponent } from './input-field/input-field.component';
     HeaderComponent,
     ButtonComponent,
     InputFieldComponent,
+    LabelComponent,
   ],
   imports: [
     BrowserModule,

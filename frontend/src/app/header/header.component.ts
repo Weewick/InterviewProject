@@ -7,8 +7,4 @@ import { Component } from '@angular/core';
 })
 export class HeaderComponent {
   title = 'Interview Projekt';
-
-  verify() {
-    console.log('verify');
-  }
 }

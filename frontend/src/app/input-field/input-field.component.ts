@@ -1,7 +1,4 @@
-import { r3JitTypeSourceSpan } from '@angular/compiler';
 import { Component, Input } from '@angular/core';
-
-import validateType, { Types } from './types'
 
 @Component({
   selector: 'app-input-field',
@@ -9,7 +6,10 @@ import validateType, { Types } from './types'
   styleUrls: ['./input-field.component.css']
 })
 export class InputFieldComponent {
+  Arr = Array; 
+  @Input() indentNum: number = 0;
   @Input() label: string = "label";
   @Input() text: string = "something";
-  @Input() type: validateType = { type: Types.string, array: false };
+  @Input() type: string = "string";
+  @Input() array: boolean = false;
 }
