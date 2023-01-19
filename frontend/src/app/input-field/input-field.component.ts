@@ -10,11 +10,15 @@ import Types, { typeTest } from '../types'
 })
 export class InputFieldComponent implements OnInit {
   Arr = Array;
+  firstClick: boolean = false;
   result: string[][] = [];
   sortedResult: string[][] = [];
+  errorArray: boolean[] = [];
   @Input() indentNum: number = 0;
   
   verify(): void {
+    this.firstClick = true;
+
     for (let i = 0; i < this.sortedResult.length; i++) {
       if (this.sortedResult[i][2]) {
         let value: string = (<HTMLInputElement>document.getElementById(this.sortedResult[i][0])).value;
@@ -23,11 +27,12 @@ export class InputFieldComponent implements OnInit {
         if (Object.values(Types).indexOf(index) >= 0) {
           let type: Types = index as unknown as Types;
 
-          console.log(value);
-          console.log(typeTest(value, type));
+          this.errorArray[i] = typeTest(value, type);
         }   
       }
     }
+
+    console.log(this.errorArray);
   }
 
   checkValue(value: string, iteration: string): string[] {

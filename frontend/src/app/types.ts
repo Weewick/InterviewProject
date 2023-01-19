@@ -4,21 +4,21 @@ enum Types {
     date = <any>"date"
 }
 
-export function typeTest(value: string, type: Types): string {
+export function typeTest(value: string, type: Types): boolean {
     switch (type) {
         case Types.string:
-            return "Success: Valid string!";            
+            return true;            
         case Types.number:
             if (isNaN(+value)) {
-                return "Error: Input is not a number!";
+                return false;
             } else {
-                return "Success: Valid number!";
+                return true;
             }
         case Types.date:
             if (!isValidDate(value)) {
-                return "Error: Input is not a valid date!";
+                return false;
             } else {
-                return "Success: Valid date!";
+                return true;
             }
         default:
             throw new Error(`Non-existent type in switch: ${type}`);

@@ -18,6 +18,14 @@
             </div>
             <input value='{{sortedResult[i][0]}}' id='{{sortedResult[i][0]}}' name='{{sortedResult[i][0]}}'>
         </div>
+        <div class="form-control" style="display: flex;">
+            <div *ngFor="let i of Arr(+sortedResult[i][2]).fill(1)">
+                <pre>   </pre>
+            </div>
+            <div class="err" *ngIf="!errorArray[i] && firstClick">
+                Wrong input type!
+            </div>
+        </div>
     </div>
 </div>
 <app-button (btnClick)="verify()"></app-button>
