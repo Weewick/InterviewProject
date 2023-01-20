@@ -15,14 +15,6 @@ const personSchema = {
         city: {
             dataType: 'string',
         },
-        test: {
-            val1: {
-                dataType: 'number',
-            },
-            val2: {
-                dataType: 'date',
-            },
-        },
     },
     wishlist: {
         dataType: 'string[]',
