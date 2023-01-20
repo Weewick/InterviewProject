@@ -1,8 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ReactiveFormsModule, FormGroup, FormBuilder, FormArray } from '@angular/forms';
+import { FormGroup, FormBuilder, FormArray } from '@angular/forms';
 
 import schema from '../mock-schema'
-import Types, { typeTest } from '../types'
+import Types, { typeTest, buildValidationArray } from '../types'
 
 @Component({
   selector: 'app-input-field',
@@ -15,7 +15,6 @@ export class InputFieldComponent implements OnInit {
   firstClick: boolean = false;
   result: string[][] = [];
   sortedResult: string[][] = [];
-  errorArray: boolean[] = [];
   @Input() indentNum: number = 0;
 
   mockData = {
@@ -29,31 +28,33 @@ export class InputFieldComponent implements OnInit {
     "wishlist": ["monitor", "car", "mobile phone"]
   }
   
-  verify(): void {
-    this.firstClick = true;
-
-    for (let i = 0; i < this.sortedResult.length; i++) {
-      if (this.sortedResult[i][2]) {
-        let value: string = (<HTMLInputElement>document.getElementById(this.sortedResult[i][0])).value;
-        let index: string = this.sortedResult[i][1];
-
-        if (Object.values(Types).indexOf(index) >= 0) {
-          let type: Types = index as unknown as Types;
-
-          this.errorArray[i] = typeTest(value, type);
-        }   
-      }
-    }
-
-    console.log(this.errorArray);
+  verify(form: object): void {
+    console.log(form);
   }
 
   getData(value: string): FormArray {
     return this.form.get(value) as FormArray;
   }
+
+  getDataAt(value: string, index: string): FormGroup {
+    return this.getData(value).get(index) as FormGroup;
+  }
   
   addField(value: string): void {
-    this.getData(value).push(this.fb.group({ 0: null }));
+    let str: string = "";
+    
+    for (let i = 0; i < this.sortedResult.length; i++) {
+      if (this.sortedResult[i][3] && value === this.sortedResult[i][3]) {
+        str = this.sortedResult[i][1];
+        break;
+      }
+    }
+
+    for (const type in Types) {
+      if (str === type.concat("[]")) {
+        this.getData(value).push(this.fb.group({ 0: ["", buildValidationArray(type as unknown as Types)] }));
+      }
+    }
   }
 
   removeField(value: string, index: number): void {
@@ -124,9 +125,9 @@ export class InputFieldComponent implements OnInit {
 
         for (const type in Types) {
           if (value === type) {
-            array.push("bb");
+            array.push(["bb", buildValidationArray(type as unknown as Types)]);
           } else if (value === type.concat("[]")) {
-            array.push(this.buildData(["a", "b", "c", "d"]));
+            array.push(this.buildData(["a", "b", "c", "d"], buildValidationArray(type as unknown as Types)));
           }
         }
       }
@@ -137,8 +138,8 @@ export class InputFieldComponent implements OnInit {
     this.form = this.fb.group(temp);
   }
 
-  buildData(data: string[] = []) {
-    return this.fb.array(data.map(val => this.fb.group(val)));
+  buildData(data: string[] = [], validationArray: any[]) {
+    return this.fb.array(data.map(val => this.fb.group({ 0: [val, validationArray] })));
   }
 
   constructor(private fb: FormBuilder) {}
@@ -157,5 +158,7 @@ export class InputFieldComponent implements OnInit {
     console.log(this.result);
     console.log(this.sortedResult);
     console.log(this.form);
+
+    console.log(this.getDataAt("5", "1").controls['0'])
   }
 }

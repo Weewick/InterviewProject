@@ -1,37 +1,5 @@
-<!--<div *ngFor="let val of sortedResult; let i = index">
-    <div *ngIf="sortedResult[i][0]==='/'">
-        <hr style="height:4px;border-width:0;color:gray;background-color:gray">
-    </div>
-    <div *ngIf="sortedResult[i][0]!=='/' && !sortedResult[i][2]">
-        <app-label [label]="sortedResult[i][0]" [indentNum]="+sortedResult[i][1]"></app-label>
-    </div>
-    <div *ngIf="sortedResult[i][0]!=='/' && sortedResult[i][2]">
-        <div class="form-control" style="display: flex;">
-            <div *ngFor="let i of Arr(+sortedResult[i][2]-1).fill(1)">
-                <pre>   </pre>
-            </div>
-            <label>{{ sortedResult[i][0] }}({{ sortedResult[i][1] }}):</label>
-        </div>
-        <div class="form-control" style="display: flex;">
-            <div *ngFor="let i of Arr(+sortedResult[i][2]-1).fill(1)">
-                <pre>   </pre>
-            </div>
-            <input value='{{sortedResult[i][0]}}' id='{{sortedResult[i][0]}}' name='{{sortedResult[i][0]}}'>
-        </div>
-        <div class="form-control" style="display: flex;">
-            <div *ngFor="let i of Arr(+sortedResult[i][2]).fill(1)">
-                <pre>   </pre>
-            </div>
-            <div class="err" *ngIf="!errorArray[i] && firstClick">
-                Wrong input type!
-            </div>
-        </div>
-    </div>
-</div>
-<app-button (btnClick)="verify()"></app-button>-->
-
 <div class="form-control">
-    <form [formGroup]="form" (ngSubmit)="verify()">
+    <form [formGroup]="form" (submit)="verify(form.value)">
         <div *ngFor="let val of sortedResult; let i = index">
             <!--line-->
             <div *ngIf="sortedResult[i][0]==='/'">
@@ -50,6 +18,13 @@
                     <div>
                         <label>{{ sortedResult[i][0] }}({{ sortedResult[i][1] }}):</label>
                         <input [name]="sortedResult[i][0]" [formControlName]="sortedResult[i][3]">
+                        <div>
+                            <small style="color: red;" *ngIf="getData(sortedResult[i][3]).errors?.['required']">Field is required!</small>
+                        </div>
+                        <div>
+                            <small style="color: red;" *ngIf="getData(sortedResult[i][3]).errors?.['isNumberValid']">Field requires a number as input!</small>
+                            <small style="color: red;" *ngIf="getData(sortedResult[i][3]).errors?.['isDateValid']">Field requires a date as input!</small>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -62,9 +37,18 @@
                             <div *ngFor="let i of Arr(+sortedResult[i][2]-1).fill(1)">
                                 <pre>   </pre>
                             </div>
-                            <div style="display: flex;">
-                                <input [name]="sortedResult[i][0]" [formControlName]="0">
-                                <app-button color="grey" text="X" (btnClick)="removeField(sortedResult[i][3], j)"></app-button>
+                            <div>
+                                <div style="display: flex;">
+                                    <input [name]="sortedResult[i][0]" [formControlName]="0">
+                                    <app-button color="grey" text="X" (btnClick)="removeField(sortedResult[i][3], j)"></app-button>
+                                </div>
+                                <div>
+                                    <small style="color: red;" *ngIf="this.getDataAt(sortedResult[i][3], j.toString()).controls['0'].errors?.['required']">Field is required!</small>
+                                </div>
+                                <div>
+                                    <small style="color: red;" *ngIf="this.getDataAt(sortedResult[i][3], j.toString()).controls['0'].errors?.['isNumberValid']">Field requires a number as input!</small>
+                                    <small style="color: red;" *ngIf="this.getDataAt(sortedResult[i][3], j.toString()).controls['0'].errors?.['isDateValid']">Field requires a date as input!</small>
+                                </div>
                             </div>
                         </div>
                     </ng-container>
@@ -75,6 +59,6 @@
         <div>
             <hr style="height: 4px; border-width: 0; color: gray; background-color: gray; margin-top: 20px; margin-bottom: 20px">
         </div>
-        <app-button (btnClick)="verify()"></app-button>
+        <app-button type="submit"></app-button>
     </form>
 </div>
