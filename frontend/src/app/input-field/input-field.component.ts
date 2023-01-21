@@ -1,8 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, FormArray } from '@angular/forms';
+import { DataService } from '../data.service';
 
-import schema from '../mock-schema'
-import Types, { typeTest, buildValidationArray } from '../types'
+import Types, { buildValidationArray } from '../types'
 
 @Component({
   selector: 'app-input-field',
@@ -11,7 +11,9 @@ import Types, { typeTest, buildValidationArray } from '../types'
 })
 export class InputFieldComponent implements OnInit {
   Arr = Array;
-  form!: FormGroup;
+  form: FormGroup = this.fb.group({});
+  data: object = {};
+  schema: object = {};
   firstClick: boolean = false;
   result: string[][] = [];
   sortedResult: string[][] = [];
@@ -19,15 +21,34 @@ export class InputFieldComponent implements OnInit {
   errorData: any = [];
   @Input() indentNum: number = 0;
 
-  mockData = {
-    "name": "Dieter",
-    "age": 38,
-    "birthdate": "1985-01-04",
-    "residence": {
-      "country": "Germany",
-      "city": "Berlin"
-    },
-    "wishlist": ["monitor", "car", "mobile phone"]
+  private getDataFromAPI(): void {
+    this.service.getData().subscribe((response) => {
+      this.data = response.data;
+      this.schema = response.schema;
+
+      console.log(this.data);
+      console.log(this.schema);
+
+      this.ready();
+    }, (error) => {
+      console.log('Error: ', error);
+    });
+  }
+
+  ready(): void {
+    for (let [key, value] of Object.entries(this.schema)) {
+      this.result.push(this.checkValue(key, "0"));
+      this.split(this.result, value, 0, true);
+      this.result.push(["/"]);
+    }
+
+    for (let [key, value] of Object.entries(this.data)) {
+      this.split(this.sortedData, value, 0, false);
+    }
+
+    this.sort();
+
+    this.formBuilder();
   }
   
   verify(form: object): void {
@@ -131,7 +152,7 @@ export class InputFieldComponent implements OnInit {
   sort() {
     let index: number = 0;
     
-    for (let i = 1; i < this.result.length-1; i++) {
+    for (let i = 1; i < this.result.length; i++) {
       if (this.result[i-1][0] === "value" && this.result[i][0] === "type") {       
         this.sortedResult.push([this.result[i-1][1], this.result[i][1], this.result[i][2], index.toString()]);
         index++;
@@ -172,26 +193,11 @@ export class InputFieldComponent implements OnInit {
     return this.fb.array(data.map(val => this.fb.group({ 0: [val, validationArray] })));
   }
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder, private service: DataService) {}
 
-  ngOnInit() {   
-    for (let [key, value] of Object.entries(schema)) {
-      this.result.push(this.checkValue(key, "0"));
-      this.split(this.result, value, 0, true);
-      this.result.push(["/"]);
-    }
-
-    for (let [key, value] of Object.entries(this.mockData)) {
-      this.split(this.sortedData, value, 0, false);
-    }
-
-    this.sort();
-
-    this.formBuilder();
-
-    console.log(this.result);
-    console.log(this.sortedResult);
-    console.log(this.form);
-    console.log(this.sortedData);
+  ngOnInit() {
+    this.getDataFromAPI();
+    
+    
   }
 }

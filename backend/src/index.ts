@@ -1,6 +1,6 @@
 import express, { Express, Request, Response } from 'express';
 import dotenv from 'dotenv';
-import router from './routes/personRoute'
+import router from './routes/dataRoute'
 
 dotenv.config();
 
@@ -14,7 +14,7 @@ app.get('/', (req: Request, res: Response) => {
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-app.use('/api/person', router);
+app.use('/data', router);
 
 app.listen(port, () => {
   console.log(`[server]: Server is running at http://localhost:${port}`);

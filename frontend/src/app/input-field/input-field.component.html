@@ -40,7 +40,7 @@
                             <div>
                                 <div style="display: flex;">
                                     <input [name]="sortedResult[i][0]" [formControlName]="0">
-                                    <app-button color="grey" text="X" (btnClick)="removeField(sortedResult[i][3], j)"></app-button>
+                                    <app-button color="indianred" text="Remove" (btnClick)="removeField(sortedResult[i][3], j)"></app-button>
                                 </div>
                                 <div>
                                     <small style="color: red;" *ngIf="errorData[sortedResult[i][3]]?.at(j)?.at(0)">Field is required!</small>
@@ -53,11 +53,8 @@
                         </div>
                     </ng-container>
                 </ng-container>
-                <app-button color="teal" text="Add" (btnClick)="addField(sortedResult[i][3])"></app-button>
+                <app-button color="mediumslateblue" text="Add" (btnClick)="addField(sortedResult[i][3])"></app-button>
             </div>
-        </div>
-        <div>
-            <hr style="height: 4px; border-width: 0; color: gray; background-color: gray; margin-top: 20px; margin-bottom: 20px">
         </div>
         <app-button type="submit" (btnClick)="verify(form.value)"></app-button>
     </form>
