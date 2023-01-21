@@ -15,6 +15,7 @@ export class InputFieldComponent implements OnInit {
   firstClick: boolean = false;
   result: string[][] = [];
   sortedResult: string[][] = [];
+  sortedData: any[] = [];
   @Input() indentNum: number = 0;
 
   mockData = {
@@ -87,16 +88,22 @@ export class InputFieldComponent implements OnInit {
     return ["value", value, iteration];
   }
 
-  split(object: object, iteration: number) {
-    if (typeof object === 'object') {
+  split(array: any[], object: any, iteration: number, bool: boolean) {
+    if (typeof object === 'object' && !Array.isArray(object)) {
       for (let [key, value] of Object.entries(object)) {  
-        if (key !== "dataType") {
-          this.result.push(this.checkValue(key, iteration.toString()));
+        if (bool) {
+          if (key !== "dataType") {
+            array.push(this.checkValue(key, iteration.toString()));
+          }
         }
-        this.split(value, iteration+1);
+        this.split(array, value, iteration+1, bool);
       }
     } else {
-      this.result.push(this.checkValue(object, iteration.toString()));
+      if (bool) {
+        array.push(this.checkValue(object, iteration.toString()));
+      } else {
+        array.push(object);
+      }
     }
   }
 
@@ -118,18 +125,20 @@ export class InputFieldComponent implements OnInit {
   formBuilder() {
     let array: any[] = [];
     let temp: object = {};
-
+    let index: number = 0;
+    
     for (let i = 0; i < this.sortedResult.length; i++) {
       if (this.sortedResult[i][2]) {
         let value: string = this.sortedResult[i][1];
 
         for (const type in Types) {
           if (value === type) {
-            array.push(["bb", buildValidationArray(type as unknown as Types)]);
+            array.push([this.sortedData[index], buildValidationArray(type as unknown as Types)]);
           } else if (value === type.concat("[]")) {
-            array.push(this.buildData(["a", "b", "c", "d"], buildValidationArray(type as unknown as Types)));
+            array.push(this.buildData(this.sortedData[index], buildValidationArray(type as unknown as Types)));
           }
         }
+        index++;
       }
     }
 
@@ -147,8 +156,12 @@ export class InputFieldComponent implements OnInit {
   ngOnInit() {   
     for (let [key, value] of Object.entries(schema)) {
       this.result.push(this.checkValue(key, "0"));
-      this.split(value, 0);
+      this.split(this.result, value, 0, true);
       this.result.push(["/"]);
+    }
+
+    for (let [key, value] of Object.entries(this.mockData)) {
+      this.split(this.sortedData, value, 0, false);
     }
 
     this.sort();
@@ -158,7 +171,6 @@ export class InputFieldComponent implements OnInit {
     console.log(this.result);
     console.log(this.sortedResult);
     console.log(this.form);
-
-    console.log(this.getDataAt("5", "1").controls['0'])
+    console.log(this.sortedData);
   }
 }
