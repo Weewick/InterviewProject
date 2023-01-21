@@ -1,5 +1,5 @@
 <div class="form-control">
-    <form [formGroup]="form" (submit)="verify(form.value)">
+    <form [formGroup]="form">
         <div *ngFor="let val of sortedResult; let i = index">
             <!--line-->
             <div *ngIf="sortedResult[i][0]==='/'">
@@ -19,11 +19,11 @@
                         <label>{{ sortedResult[i][0] }}({{ sortedResult[i][1] }}):</label>
                         <input [name]="sortedResult[i][0]" [formControlName]="sortedResult[i][3]">
                         <div>
-                            <small style="color: red;" *ngIf="getData(sortedResult[i][3]).errors?.['required']">Field is required!</small>
+                            <small style="color: red;" *ngIf="errorData[sortedResult[i][3]]?.at(0)">Field is required!</small>
                         </div>
                         <div>
-                            <small style="color: red;" *ngIf="getData(sortedResult[i][3]).errors?.['isNumberValid']">Field requires a number as input!</small>
-                            <small style="color: red;" *ngIf="getData(sortedResult[i][3]).errors?.['isDateValid']">Field requires a date as input!</small>
+                            <small style="color: red;" *ngIf="errorData[sortedResult[i][3]]?.at(1)">Field requires a valid number as input!</small>
+                            <small style="color: red;" *ngIf="errorData[sortedResult[i][3]]?.at(2)">Field requires a valid date as input!</small>
                         </div>
                     </div>
                 </div>
@@ -43,11 +43,11 @@
                                     <app-button color="grey" text="X" (btnClick)="removeField(sortedResult[i][3], j)"></app-button>
                                 </div>
                                 <div>
-                                    <small style="color: red;" *ngIf="this.getDataAt(sortedResult[i][3], j.toString()).controls['0'].errors?.['required']">Field is required!</small>
+                                    <small style="color: red;" *ngIf="errorData[sortedResult[i][3]]?.at(j)?.at(0)">Field is required!</small>
                                 </div>
                                 <div>
-                                    <small style="color: red;" *ngIf="this.getDataAt(sortedResult[i][3], j.toString()).controls['0'].errors?.['isNumberValid']">Field requires a number as input!</small>
-                                    <small style="color: red;" *ngIf="this.getDataAt(sortedResult[i][3], j.toString()).controls['0'].errors?.['isDateValid']">Field requires a date as input!</small>
+                                    <small style="color: red;" *ngIf="errorData[sortedResult[i][3]]?.at(j)?.at(1)">Field requires a valid number as input!</small>
+                                    <small style="color: red;" *ngIf="errorData[sortedResult[i][3]]?.at(j)?.at(2)">Field requires a valid date as input!</small>
                                 </div>
                             </div>
                         </div>
@@ -59,6 +59,6 @@
         <div>
             <hr style="height: 4px; border-width: 0; color: gray; background-color: gray; margin-top: 20px; margin-bottom: 20px">
         </div>
-        <app-button type="submit"></app-button>
+        <app-button type="submit" (btnClick)="verify(form.value)"></app-button>
     </form>
 </div>

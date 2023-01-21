@@ -16,6 +16,7 @@ export class InputFieldComponent implements OnInit {
   result: string[][] = [];
   sortedResult: string[][] = [];
   sortedData: any[] = [];
+  errorData: any = [];
   @Input() indentNum: number = 0;
 
   mockData = {
@@ -31,6 +32,23 @@ export class InputFieldComponent implements OnInit {
   
   verify(form: object): void {
     console.log(form);
+
+    for (let [key, value] of Object.entries(form)) {
+      this.errorData[+key] = [];
+
+      if (typeof value === "string" || typeof value === "number") {
+        this.errorData[+key].push(this.getData(key).errors?.['required']);
+        this.errorData[+key].push(this.getData(key).errors?.['isNumberValid']);
+        this.errorData[+key].push(this.getData(key).errors?.['isDateValid']);
+      } else {
+        for (let i = 0; i < value.length; i++) {
+          this.errorData[+key][i] = [];
+          this.errorData[+key][i].push(this.getDataAt(key, i.toString())?.controls['0'].errors?.['required']);
+          this.errorData[+key][i].push(this.getDataAt(key, i.toString())?.controls['0'].errors?.['isNumberValid']);
+          this.errorData[+key][i].push(this.getDataAt(key, i.toString())?.controls['0'].errors?.['isDateValid']);
+        }
+      }
+    }
   }
 
   getData(value: string): FormArray {
@@ -61,6 +79,9 @@ export class InputFieldComponent implements OnInit {
   removeField(value: string, index: number): void {
     if (this.getData(value).length > 1) {
       this.getData(value).removeAt(index);
+      if (index > -1) {
+        this.errorData[value]?.splice(index, 1);
+      }
     } else {
       this.getData(value).patchValue([{ 0: null }]);
     }
@@ -147,7 +168,7 @@ export class InputFieldComponent implements OnInit {
     this.form = this.fb.group(temp);
   }
 
-  buildData(data: string[] = [], validationArray: any[]) {
+  buildData(data: string[] = [], validationArray: any[], ) {
     return this.fb.array(data.map(val => this.fb.group({ 0: [val, validationArray] })));
   }
 
