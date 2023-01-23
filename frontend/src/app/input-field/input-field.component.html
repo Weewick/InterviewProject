@@ -23,7 +23,7 @@
                         </div>
                         <div>
                             <small style="color: red;" *ngIf="errorData[sortedResult[i][3]]?.at(1)">Field requires a valid number as input!</small>
-                            <small style="color: red;" *ngIf="errorData[sortedResult[i][3]]?.at(2)">Field requires a valid date as input!</small>
+                            <small style="color: red;" *ngIf="errorData[sortedResult[i][3]]?.at(2)">Field requires a valid date as input! (YYYY-MM-DD)</small>
                         </div>
                     </div>
                 </div>
@@ -47,7 +47,7 @@
                                 </div>
                                 <div>
                                     <small style="color: red;" *ngIf="errorData[sortedResult[i][3]]?.at(j)?.at(1)">Field requires a valid number as input!</small>
-                                    <small style="color: red;" *ngIf="errorData[sortedResult[i][3]]?.at(j)?.at(2)">Field requires a valid date as input!</small>
+                                    <small style="color: red;" *ngIf="errorData[sortedResult[i][3]]?.at(j)?.at(2)">Field requires a valid date as input! (YYYY-MM-DD)</small>
                                 </div>
                             </div>
                         </div>

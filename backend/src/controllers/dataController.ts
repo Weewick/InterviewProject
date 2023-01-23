@@ -27,7 +27,11 @@ function split(array: string[][], object: any, iteration: number) {
     }
 }
 
-function compareDataWithSchema(data: string[][], schema: string[][]): boolean {  
+function compareDataWithSchema(data: string[][], schema: string[][]): boolean {
+    if (schema.length !== data.length) {
+        return false;
+    }
+    
     for (let i = 1; i < schema.length; i++) {
         if (schema[i-1][0] === "value" && schema[i][0] === "type") {
             let compareVal = +schema[i][2]-1;
@@ -46,6 +50,10 @@ function compareDataWithSchema(data: string[][], schema: string[][]): boolean {
 
             for (const type in Types) {
                 if (schema[i][1] === type) {
+                    if (typeof data[i][1] !== "string" && typeof data[i][1] !== "number") {
+                        return false;
+                    }
+
                     if (!validType(type as unknown as Types, data[i][1])) {
                         return false;
                     }

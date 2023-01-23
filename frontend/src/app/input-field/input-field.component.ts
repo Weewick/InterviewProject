@@ -14,7 +14,6 @@ export class InputFieldComponent implements OnInit {
   form: FormGroup = this.fb.group({});
   data: object = {};
   schema: object = {};
-  firstClick: boolean = false;
   result: string[][] = [];
   sortedResult: string[][] = [];
   sortedData: any[] = [];
@@ -49,6 +48,8 @@ export class InputFieldComponent implements OnInit {
     this.sort();
 
     this.formBuilder();
+
+    console.log(this.sortedResult);
   }
   
   verify(form: object): void {
@@ -197,7 +198,5 @@ export class InputFieldComponent implements OnInit {
 
   ngOnInit() {
     this.getDataFromAPI();
-    
-    
   }
 }
