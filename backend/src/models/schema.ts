@@ -15,10 +15,15 @@ const personSchema = {
         city: {
             dataType: 'string',
         },
+        test: {
+            array: {
+                dataType: 'date[]',
+            }, 
+        }, 
     },
     wishlist: {
         dataType: 'string[]',
-    }, 
+    },
 };
 
 export = personSchema;

@@ -4,7 +4,10 @@
     "birthdate": "1985-01-04",
     "residence": {
         "country": "Germany",
-        "city": "Berlin"
+        "city": "Berlin",
+        "test": {
+            "array": ["1990-04-20", "2001-08-05"]
+        }
     },
     "wishlist": ["monitor", "car", "mobile phone"]
 }

@@ -10,33 +10,31 @@
                 <app-label [label]="sortedResult[i][0]" [indentNum]="+sortedResult[i][1]"></app-label>
             </div>
             <!--normal field-->
-            <div *ngIf="sortedResult[i][0]!=='/' && sortedResult[i][3] && !checkArrayType(sortedResult[i][1])">
-                <div style="display: flex;">
-                    <div *ngFor="let i of Arr(+sortedResult[i][2]-1).fill(1)">
-                        <pre>   </pre>
+            <div *ngIf="sortedResult[i][0]!=='/' && sortedResult[i][3] && !checkArrayType(sortedResult[i][1])" style="display: flex; margin-bottom: 20px;">
+                <div *ngFor="let i of Arr(+sortedResult[i][2]-1).fill(1)">
+                    <pre>   </pre>
+                </div>
+                <div>
+                    <label>{{ sortedResult[i][0] }}({{ sortedResult[i][1] }}):</label>
+                    <input [name]="sortedResult[i][0]" [formControlName]="sortedResult[i][3]">
+                    <div>
+                        <small style="color: red;" *ngIf="errorData[sortedResult[i][3]]?.at(0)">Field is required!</small>
                     </div>
                     <div>
-                        <label>{{ sortedResult[i][0] }}({{ sortedResult[i][1] }}):</label>
-                        <input [name]="sortedResult[i][0]" [formControlName]="sortedResult[i][3]">
-                        <div>
-                            <small style="color: red;" *ngIf="errorData[sortedResult[i][3]]?.at(0)">Field is required!</small>
-                        </div>
-                        <div>
-                            <small style="color: red;" *ngIf="errorData[sortedResult[i][3]]?.at(1)">Field requires a valid number as input!</small>
-                            <small style="color: red;" *ngIf="errorData[sortedResult[i][3]]?.at(2)">Field requires a valid date as input! (YYYY-MM-DD)</small>
-                        </div>
+                        <small style="color: red;" *ngIf="errorData[sortedResult[i][3]]?.at(1)">Field requires a valid number as input!</small>
+                        <small style="color: red;" *ngIf="errorData[sortedResult[i][3]]?.at(2)">Field requires a valid date as input! (YYYY-MM-DD)</small>
                     </div>
                 </div>
             </div>
             <!--array field-->
-            <div *ngIf="sortedResult[i][0]!=='/' && sortedResult[i][3] && checkArrayType(sortedResult[i][1])">
-                <label>{{ sortedResult[i][0] }}({{ sortedResult[i][1] }}):</label>
-                <ng-container [formArrayName]="sortedResult[i][3]" *ngFor="let data of getData(sortedResult[i][3]).controls; index as j">
-                    <ng-container [formGroupName]="j">
-                        <div style="display: flex;">
-                            <div *ngFor="let i of Arr(+sortedResult[i][2]-1).fill(1)">
-                                <pre>   </pre>
-                            </div>
+            <div *ngIf="sortedResult[i][0]!=='/' && sortedResult[i][3] && checkArrayType(sortedResult[i][1])" style="display: flex; margin-bottom: 20px;">
+                <div *ngFor="let i of Arr(+sortedResult[i][2]-1).fill(1)">
+                    <pre>   </pre>
+                </div>
+                <div>
+                    <label>{{ sortedResult[i][0] }}({{ sortedResult[i][1] }}):</label>
+                    <ng-container [formArrayName]="sortedResult[i][3]" *ngFor="let data of getData(sortedResult[i][3]).controls; index as j">
+                        <ng-container [formGroupName]="j">
                             <div>
                                 <div style="display: flex;">
                                     <input [name]="sortedResult[i][0]" [formControlName]="0">
@@ -50,10 +48,10 @@
                                     <small style="color: red;" *ngIf="errorData[sortedResult[i][3]]?.at(j)?.at(2)">Field requires a valid date as input! (YYYY-MM-DD)</small>
                                 </div>
                             </div>
-                        </div>
+                        </ng-container>
                     </ng-container>
-                </ng-container>
-                <app-button color="mediumslateblue" text="Add" (btnClick)="addField(sortedResult[i][3])"></app-button>
+                    <app-button color="mediumslateblue" text="Add" (btnClick)="addField(sortedResult[i][3])"></app-button>
+                </div>
             </div>
         </div>
         <app-button type="submit" (btnClick)="verify(form.value)"></app-button>
